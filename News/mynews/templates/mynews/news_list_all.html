@@ -1,12 +1,30 @@
 {% extends 'mynews/base_news.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% block title %}
+    {{ block.super }}
+{% endblock %}
 
-</body>
-</html>
+{% block news %}
+    <div class="row">
+        {% for new in news %}
+        {% if new.status == 'published' %}
+        <div class="col mt-4">
+            {% include 'mynews/includes/news_card.html' %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block links %}
+<div class="card">
+    {% for new in news %}
+        {% if new.status == 'published' %}
+        <a href="{{new.get_absolute_url}}"><p class="ml-3 mt-2">
+            {{ new.title }}
+        </p></a>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'mynews/base_news.html' %}
+
+{% block title %}
+    {{new.title|title}} - {{ block.super }}
+{% endblock %}
+
+<section>
+{% block info %}
+<div class="row justify-content-center mt-3">
+    <h1>{{new.title}}</h1>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6">
+        {{new.body}}
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+    <div class="col-6">
+
+        {% with comments.count as total_comments %}
+        <h3>{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
+        {% endwith %}
+
+        {% for comment in comments %}
+        {% include 'mynews/includes/comment.html' %}
+        {% empty %}
+        <p>There are no comments</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+</section>

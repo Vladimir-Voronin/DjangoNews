@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News
+from .models import *
 # Register your models here.
 
 # admin.site.register(News)
@@ -13,3 +13,9 @@ class NewsAdmin(admin.ModelAdmin):
     raw_id_fields = ('author',)
     date_hierarchy = 'time_publish'
     ordering = ('-status', '-time_publish')
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'news', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')

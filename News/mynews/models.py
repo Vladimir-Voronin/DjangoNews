@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 
 class NewsManager(models.Manager):
     def get_queryset(self):
@@ -32,15 +32,67 @@ class News(models.Model):
     objects = models.Manager()
     published = NewsManager()
 
-    class Meta:
-        ordering = ['-time_publish']
-
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('news_detail', args=[self.time_publish.year, self.time_publish.month,
+                                            self.time_publish.day, self.slug])
+
+    class Meta:
+        ordering = ['-time_publish']
 
 
 class Tag(models.Model):
     title = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=200, unique=True)
+
+
+class Comment(models.Model):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField(max_length=2000)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return 'Comment by {} on {}'.format(self.name, self.news)
+
+    class Meta:
+        ordering = ['created']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

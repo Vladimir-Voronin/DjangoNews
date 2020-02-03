@@ -1,0 +1,38 @@
+{% extends 'mynews/base_news.html '%}
+
+{% block title %}
+    Share news - {{ block.super }}
+{% endblock %}
+
+
+{% block info %}
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-md-3">
+            {% if sent %}
+            <p>Email successfully sent to {{ form.cleaned_data.to }}</p>
+            {% else %}
+            <form action="{% url 'news_share' news_id=new.id  %}" method="post">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="form-group mt-2">
+
+                    {{field.label}}
+                    {{field}}
+
+                    {% if field.errors %}
+                    <div class="alert alert-danger">
+                        {{field.errors}}
+                    </div>
+
+                </div>
+                {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary mt-3">Send Email</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
