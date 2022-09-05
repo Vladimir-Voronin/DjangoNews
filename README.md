@@ -1,1 +1,1 @@
-# DjangoNews
+# DjangoNews.
